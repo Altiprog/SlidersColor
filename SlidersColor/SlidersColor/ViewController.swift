@@ -19,10 +19,7 @@ final class ViewController: UIViewController {
     @IBOutlet weak var greenSlider: UISlider!
     @IBOutlet weak var blueSlider: UISlider!
     // MARK: -
-    var redColor = 0.1
-    var greenColor = 0.3
-    var blueColor = 0.5
-    // MARK: -
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,37 +36,37 @@ final class ViewController: UIViewController {
     }
     // MARK: -
     override func viewWillLayoutSubviews() {
-        viewColors.backgroundColor = UIColor(red: redColor,
-                                             green: greenColor,
-                                             blue: blueColor,
+        viewColors.backgroundColor = UIColor(red: CGFloat(redSlider.value),
+                                             green: CGFloat(greenSlider.value),
+                                             blue: CGFloat(blueSlider.value),
                                              alpha: 1)
     }
     // MARK: -
     @IBAction func actRedSlider() {
         valueRedLable.text = String(format: "%.2f", redSlider.value)
-        redColor = CGFloat(redSlider.value)
+        redSlider.value = redSlider.value
     }
     // MARK: -
     @IBAction func actGreenSlider() {
         valueGreenLable.text = String(format: "%.2f", greenSlider.value)
-        greenColor = CGFloat(greenSlider.value)
+        greenSlider.value = greenSlider.value
     }
     // MARK: -
     @IBAction func actBlueSlider() {
         valueBlueLable.text = String(format: "%.2f", blueSlider.value)
-        blueColor = CGFloat(blueSlider.value)
+        blueSlider.value = blueSlider.value
     }
     // MARK: -
     private func setupValueLable() {
-        valueRedLable.text =  String(redColor)
-        valueGreenLable.text = String(greenColor)
-        valueBlueLable.text = String(blueColor)
+        valueRedLable.text =  String(redSlider.value)
+        valueGreenLable.text = String(greenSlider.value)
+        valueBlueLable.text = String(blueSlider.value)
     }
     // MARK: -
     private func setupSliderValue() {
-        redSlider.value = Float(redColor)
-        greenSlider.value = Float(greenColor)
-        blueSlider.value = Float(blueColor)
+        redSlider.value = 0.11
+        greenSlider.value = 0.33
+        blueSlider.value = 0.55
     }
 }
 
