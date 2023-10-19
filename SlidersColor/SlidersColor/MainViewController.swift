@@ -10,7 +10,7 @@ import UIKit
 class MainViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let secondVC = segue.destination as? ViewController else { return }
+        guard let secondVC = segue.destination as? SlidersViewController else { return }
         secondVC.delegate = self
         secondVC.receivedColor = view.backgroundColor
     }

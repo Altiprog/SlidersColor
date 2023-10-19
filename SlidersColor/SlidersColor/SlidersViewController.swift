@@ -6,12 +6,12 @@
 //
 
 import UIKit
-// MARK: -
+// MARK: - SecondViewControllerDelegate
 protocol SecondViewControllerDelegate: AnyObject {
     func viewColorChanged(_ color: UIColor)
 }
-
-final class ViewController: UIViewController {
+// MARK: - SlidersViewController
+final class SlidersViewController: UIViewController {
     
     @IBOutlet weak var viewColors: UIView!
     
@@ -38,7 +38,7 @@ final class ViewController: UIViewController {
         viewColors.layer.cornerRadius = 20
         
         setupValueLable()
-        getColor()
+        getColors()
         
         redText.delegate = self
         greenText.delegate = self
@@ -48,28 +48,26 @@ final class ViewController: UIViewController {
     @IBAction func actRedSlider() {
         valueRedLable.text = String(format: "%.2f", redSlider.value)
         redText.text = String(format: "%.2f", redSlider.value)
-
     }
-   
+    
     @IBAction func actGreenSlider() {
         valueGreenLable.text = String(format: "%.2f", greenSlider.value)
         greenText.text = String(format: "%.2f", greenSlider.value)
-
     }
-   
+    
     @IBAction func actBlueSlider() {
         valueBlueLable.text = String(format: "%.2f", blueSlider.value)
         blueText.text = String(format: "%.2f", blueSlider.value)
-
     }
     
     @IBAction func buttonPressed() {
+        
         delegate?.viewColorChanged(UIColor(red: CGFloat(redSlider.value),
                                            green: CGFloat(greenSlider.value),
                                            blue: CGFloat(blueSlider.value),
                                            alpha: 1))
-        dismiss(animated: true)
         
+        dismiss(animated: true)
     }
     // MARK: -
     override func viewWillLayoutSubviews() {
@@ -85,15 +83,28 @@ final class ViewController: UIViewController {
         valueBlueLable.text = String(format: "%.2f", blueSlider.value)
     }
     
-    private func getColor() {
+    private func updateUI(for slider: UISlider, label: UILabel, textField: UITextField, with value: Float) {
+        slider.value = value
+        label.text = String(format: "%.2f", value)
+        textField.text = String(format: "%.2f", value)
+    }
+    
+    private func getColors() {
         let ciColor = CIColor(color: receivedColor!)
         updateUI(for: redSlider, label: valueRedLable, textField: redText, with: Float(ciColor.red))
         updateUI(for: greenSlider, label: valueGreenLable, textField: greenText, with: Float(ciColor.green))
         updateUI(for: blueSlider, label: valueBlueLable, textField: blueText, with: Float(ciColor.blue))
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        redText.endEditing(true)
+        greenText.endEditing(true)
+        blueText.endEditing(true)
+    }
 }
-
-extension ViewController: UITextFieldDelegate {
+// MARK: -
+extension SlidersViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
         guard let text = textField.text, let value = Float(text) else {
             showAlert()
@@ -118,19 +129,13 @@ extension ViewController: UITextFieldDelegate {
                                              blue: CGFloat(blueSlider.value),
                                              alpha: 1)
     }
-    private func updateUI(for slider: UISlider, label: UILabel, textField: UITextField, with value: Float) {
-        slider.value = value
-        label.text = String(format: "%.2f", value)
-        textField.text = String(format: "%.2f", value)
-    }
     
     private func showAlert() {
         let alert = UIAlertController(title: "🚨Attention🚨", message: "Specify a value between 0 and 1", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         self.present(alert, animated: true)
     }
-    
 }
-
+// MARK: -
 
 
